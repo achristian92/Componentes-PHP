@@ -3,7 +3,7 @@
 namespace Styde;
 
 
-class SessionFileDriver
+class SessionFileDriver implements SessionDriverInterface
 {
     public  function load()
     {

@@ -2,15 +2,15 @@
 
 use Styde\AccessHandler as Access;
 use Styde\Authenticator;
+use Styde\SessionArrayDriver;
 use Styde\SessionManager;
+use Styde\Stubs\AuthenticatorStub;
 
 class AccessHandlerTest extends \PHPUnit\Framework\TestCase
 {
     public function test_grant_access()
     {
-        $driver = new \Styde\SessionFileDriver();
-        $session = new SessionManager($driver);
-        $auth = new Authenticator($session);
+        $auth = new AuthenticatorStub();
         $access = new Access($auth);
         $this->assertTrue(
             $access->check('admin')
@@ -18,9 +18,8 @@ class AccessHandlerTest extends \PHPUnit\Framework\TestCase
     }
     public function test_deny_access()
     {
-        $driver = new \Styde\SessionFileDriver();
-        $session = new SessionManager($driver);
-        $auth = new Authenticator($session);
+        $auth = new AuthenticatorStub();
+
         $access = new Access($auth);
 
         $this->assertFalse(

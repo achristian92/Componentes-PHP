@@ -1,14 +1,13 @@
 <?php
 
 namespace Styde;
-use Styde\Authenticator as Auth;
 
 class AccessHandler
 {
 
     protected $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(AuthenticatorInterface $auth)
     {
 
         $this->auth = $auth;
