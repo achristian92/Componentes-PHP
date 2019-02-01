@@ -19,12 +19,17 @@ class ComposerStaticInit737d1d7bdb2e23a912e54fb507f27074
         ),
         'W' => 
         array (
+            'Whoops\\' => 7,
             'Webmozart\\Assert\\' => 17,
         ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Styde\\' => 6,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
         ),
         'D' => 
         array (
@@ -40,6 +45,10 @@ class ComposerStaticInit737d1d7bdb2e23a912e54fb507f27074
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
+        'Whoops\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
+        ),
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
@@ -51,6 +60,10 @@ class ComposerStaticInit737d1d7bdb2e23a912e54fb507f27074
         'Styde\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

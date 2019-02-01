@@ -1,6 +1,6 @@
 <?php
 
-function view($template,array $vars)
+function view($template,array $vars = array())
 {
     extract($vars);
 
@@ -13,4 +13,10 @@ function view($template,array $vars)
     $templateContent = ob_get_clean(); //obtener el contenido de la plantilla
 
     require ($path .'layout.php'); //cargar segunda plantilla
+}
+function abort404()
+{
+    http_response_code(404);
+    view('page404');
+    exit();
 }
