@@ -3,68 +3,47 @@
  * Created by PhpStorm.
  * User: alanruizaguirre
  * Date: 2019-02-01
- * Time: 11:14
+ * Time: 11:42
  */
 
 namespace Styde;
 
 
+use Closure;
+
 class Container
 {
-    protected $shared = array();
-    protected static $container;
+    protected $shared = [];
+    protected $bindings = [];
 
-    /**
-     * @param mixed $container
-     */
-    public static function getIntance()
+    public function bind($name,$resolver)
     {
-        if(static::$container == null){
-            static::$container = new Container;
-        }
-        return static::$container;
+        $this->bindings[$name] = [
+            'resolver' => $resolver
+        ];
     }
 
-    public static function setContainer(Container $container)
+    public function instance($name, $object)
     {
-        static::$container = $container;
+        $this->shared[$name] = $object;
     }
 
-    public static function clearContainer()
+    public function make($name)
     {
-        static::$container = null;
-
-    }
-
-    public function session()
-    {
-        if(isset($this->shared['session'])){
-            return $this->shared['session'];
+        if(isset($this->shared[$name])){
+            return $this->shared[$name];
         }
 
-        $data = array(
-            'user_data' => array(
-                'name' => 'Dulio',
-                'role' => 'teacher'
-            )
-        );
+        $resolver = $this->bindings[$name]['resolver'];
 
-        $driver = new SessionArrayDriver($data);
+        if($resolver instanceof Closure){
+            $object = $resolver($this);
+        }else{
+            $object = new $resolver;
+        }
 
-        return $this->shared['session'] = new SessionManager($driver);
+        return $object;
     }
-    public function auth()
-    {
-        if(isset($this->shared['auth'])){
-            return $this->shared['auth'];
-        }
-        return $this->shared['auth'] = new Authenticator($this->session());
-    }
-    public function access()
-    {
-        if(isset($this->shared['access'])){
-            return $this->shared['access'];
-        }
-        return  $this->shared['access'] = new AccessHandler($this->auth());
-    }
+
+
 }
