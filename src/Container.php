@@ -10,6 +10,8 @@ namespace Styde;
 
 
 use Closure;
+use InvalidArgumentException;
+use ReflectionClass;
 
 class Container
 {
@@ -37,12 +39,38 @@ class Container
         $resolver = $this->bindings[$name]['resolver'];
 
         if($resolver instanceof Closure){
-            $object = $resolver($this);
+            $object =$resolver($this);
         }else{
-            $object = new $resolver;
+            $object = $this->build($resolver);
         }
 
         return $object;
+    }
+
+    public function build($name)
+    {
+        $reflection = new ReflectionClass($name);
+
+        if(!$reflection->isInstantiable()){
+            throw new InvalidArgumentException("$name no is intanciable");
+        }
+
+        $constructor = $reflection->getConstructor(); // devuelve methodo de reflextionMethod
+
+        if(is_null($constructor)){
+            return new $name;
+        }
+        $constructorParameters = $constructor->getParameters();//[devulve array de reflectionParamt
+        //
+        $arguments = array();
+
+        foreach ($constructorParameters as $constParam) {
+            $parameterClassName = $constParam->getClass()->getName(); //Bar
+
+            $arguments[] = $this->build($parameterClassName);
+        }
+        //new Food(bar)
+        return $reflection->newInstanceArgs($arguments);
     }
 
 
