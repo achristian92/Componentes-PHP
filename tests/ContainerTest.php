@@ -1,6 +1,7 @@
 <?php
 
 use Styde\Container;
+use Styde\ContainerException;
 
 /**
  * Created by PhpStorm.
@@ -52,7 +53,23 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf('Foo',$container->make('foo'));
 
+    }
+    public function test_expected_container_exception_if_dependency_does_not_exist()
+    {
+       $this->expectException(ContainerException::class,'Unable to build [Qux] : class Norf does not exist');
 
+       $container = new Container();
+       $container->bind('qux','Qux');
+       $container->make('qux');
+    }
+
+    /**
+     * @expectedException Styde\ContainerException
+     */
+    public function test_class_does_not_exist()
+    {
+        $container = new Container();
+        $container->make('Norf');
     }
 
 }
@@ -75,5 +92,11 @@ class Foobar
 }
 class Baz
 {
-    
+
+}
+class Qux
+{
+    public function __construct(Norf $norf)
+    {
+    }
 }

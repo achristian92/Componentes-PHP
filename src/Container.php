@@ -12,6 +12,7 @@ namespace Styde;
 use Closure;
 use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 
 class Container
 {
@@ -65,7 +66,12 @@ class Container
         $arguments = array();
 
         foreach ($constructorParameters as $constParam) {
-            $parameterClassName = $constParam->getClass()->getName(); //Bar
+            try {
+                $parameterClassName = $constParam->getClass()->getName(); //Bar
+
+            }catch (ReflectionException $e){
+                throw new ContainerException("Unable to build[$name]:" .$e->getMessage(),null,$e);
+            }
 
             $arguments[] = $this->build($parameterClassName);
         }
