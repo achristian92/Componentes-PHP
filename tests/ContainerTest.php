@@ -1,16 +1,12 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Styde\Container;
 use Styde\ContainerException;
 
-/**
- * Created by PhpStorm.
- * User: alanruizaguirre
- * Date: 2019-02-01
- * Time: 11:38
- */
 
-class ContainerTest extends \PHPUnit\Framework\TestCase
+
+class ContainerTest extends TestCase
 {
     public function test_bind_from_closure()
     {
@@ -42,7 +38,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         $container->bind('key','StdClass');
 
         $this->assertInstanceOf('StdClass',$container->make('key'));
-        
+
     }
 
     public function test_bind_with_automatic_resolution()
@@ -66,12 +62,43 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
     /**
      * @expectedException Styde\ContainerException
      */
-    public function test_class_does_not_exist()
+    public function exercise_test_class_does_not_exist()
     {
         $container = new Container();
-        $container->make('Norf');
+
+        $container->bind('norf', 'Norf');
+
+        $container->make('norf');
     }
 
+    public function test_container_make_with_arguments()
+    {
+        $container = new Container();
+        $this->assertInstanceOf(
+            MailDummy::class,
+            $container->make('MailDummy',['url' => 'Styde.net','key'=>'secret'])
+        );
+    }
+    public function excice_test_container_make_with_default_arguments()
+    {
+        $container = new Container();
+        $this->assertInstanceOf(
+            MailDummy::class,
+            $container->make('MailDummy',['url' => 'Styde.net'])
+        );
+    }
+
+}
+class MailDummy
+{
+    private $url;
+    private $key;
+
+    public function __construct($url, $key = 'secret')
+    {
+        $this->url = $url;
+        $this->key = $key;
+    }
 }
 class Foo
 {
