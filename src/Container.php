@@ -18,17 +18,37 @@ class Container
 {
     protected $shared = [];
     protected $bindings = [];
+    protected static $instance;
 
-    public function bind($name,$resolver)
+
+    public static function getInstance()
+    {
+        if(static::$instance == null){
+            static::$instance = new Container;
+        }
+        return static::$instance;
+    }
+
+    public function setInstance(Container $container)
+    {
+        static::$instance = $container;
+    }
+
+    public function bind($name,$resolver,$shared = false)
     {
         $this->bindings[$name] = [
-            'resolver' => $resolver
+            'resolver' => $resolver,
+            'shared' => $shared
         ];
     }
 
     public function instance($name, $object)
     {
         $this->shared[$name] = $object;
+    }
+    public function singleton($name,$resolver)
+    {
+        $this->bind($name,$resolver,true);
     }
 
     public function make($name,array $arguments = array())
@@ -39,8 +59,10 @@ class Container
 
         if(isset($this->bindings[$name])){
             $resolver = $this->bindings[$name]['resolver'];
+            $shared = $this->bindings[$name]['shared'];
         }else{
             $resolver = $name;
+            $shared = false;
         }
 
         if($resolver instanceof Closure){
@@ -49,6 +71,9 @@ class Container
             $object = $this->build($resolver,$arguments);
         }
 
+        if($shared){
+            $this->shared[$name] = $object;
+        }
         return $object;
     }
 
@@ -96,6 +121,8 @@ class Container
         return $reflection->newInstanceArgs($dependencias);
 
     }
+
+
 
 
 }
