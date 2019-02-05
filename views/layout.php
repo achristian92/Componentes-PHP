@@ -41,12 +41,12 @@
                     <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <?php if($access->check('teacher')): ?>
+                    <?php if(Access::check('teacher')): ?>
                     <a class="nav-link" href="teachers.php">Teacher</a>
                     <?php endif; ?>
                 </li>
                 <li class="nav-item">
-                    <?php if($access->check('student')): ?>
+                    <?php if(Access::check('student')): ?>
                     <a class="nav-link " href="students.php">Students</a>
                     <?php endif; ?>
 

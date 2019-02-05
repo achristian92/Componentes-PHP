@@ -1,18 +1,17 @@
 <?php
 
 use Styde\Container;
+use Styde\Facades\Access;
 
 require (__DIR__.'/../bootstrap/start.php');
 
 function studentController()
 {
-    $access = Container::getInstance()->make('access');
-
-    if(!$access->check('student')){
+    if(!Access::check('student')){
         abort404();
     }
 
-    view('students',[]);
+    view('students');
 
 }
 

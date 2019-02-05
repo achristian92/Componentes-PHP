@@ -8,10 +8,10 @@ function teacherController()
 {
     $access = Container::getInstance()->make('access');
 
-    if(! $access->check('teacher')){
+    if(! Access::check('teacher')){
         abort404();
     }
-    view('teachers',compact('access'));
+    view('teachers');
 }
 
 teacherController();

@@ -4,6 +4,10 @@ use Styde\Container;
 
 require (__DIR__.'/../bootstrap/start.php');
 
-$access = Container::getInstance()->make('access');
+function homeController()
+{
 
-view('index',compact('access'));
+    view('index');
+}
+
+homeController();
